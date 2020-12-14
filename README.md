@@ -1,3 +1,3 @@
 # OrderedArrayList
 Discussion Notes:
-- constructor should change the "create 10 null spaces" of ArrayList
+- constructor should just call super();
