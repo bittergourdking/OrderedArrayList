@@ -8,24 +8,22 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
     super(initialCapacity);
   }
   //methods
-  private int findIndex(T element, int size) {
-    if (element == null) {
-      throw new IllegalArgumentException("You tried to set a null value! That is not allowed.");
-    }
-    int index = 0;
-    for (int i = 0; i < size; i++) {
-      if (super.get(i).compareTo(element) < 0) {
-        i++;
+  private int findIndex(T element) {
+    for (int i = 0; i < super.size(); i++) {
+      if (element.compareTo(this.get(i)) <= 0) {
+        return i;
       }
     }
-    return index;
+    return super.size();
   }
 
   public boolean add(T element) {
     if (element == null) {
-      throw new IllegalArgumentException("You tried to set a null value! That is not allowed.");
+      throw new IllegalArgumentException("No nulls allowed.");
     }
-    int size = this.size();
+    super.add(findIndex(element), element);
+    return true;
+/*    int size = this.size();
     for (int i = 0; i < size; i++) {
       if (element.compareTo(this.get(i)) <= 0) {
         super.add(i, element);
@@ -33,14 +31,41 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
       }
     }
     return super.add(element);
+*/
   }
 
   public void add(int index, T element) {
-    super.add(findIndex(element, this.size()), element);
+    if (element == null) {
+      throw new IllegalArgumentException("No nulls allowed.");
+    }
+    if (index > this.size()) {
+      throw new IndexOutOfBoundsException("Index is larger than capacity.");
+    }
+    int size = this.size();
+    for (int i = 0; i < size; i++) {
+      if (element.compareTo(this.get(i)) <= 0) {
+        super.add(i, element);
+        break;
+      }
+    }
+    super.add(size, element);
   }
 
   public T set(int index, T element) {
-    return super.set(findIndex(element, this.size()), element);
+    if (element == null) {
+      throw new IllegalArgumentException("No nulls allowed.");
+    }
+    if (index > this.size()) {
+      throw new IndexOutOfBoundsException("Index is larger than capacity.");
+    }
+    T answer = this.get(index);
+    int correctIndex = findIndex(element);
+    this.remove(index);
+    for (int j = super.size(); j > correctIndex; j--) {
+      super.set(j, super.get(j - 1));
+    }
+    super.set(correctIndex, element);
+    return answer;
   }
 
 }
