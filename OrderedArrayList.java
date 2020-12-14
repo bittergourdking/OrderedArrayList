@@ -23,15 +23,6 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
     }
     super.add(findIndex(element), element);
     return true;
-/*    int size = this.size();
-    for (int i = 0; i < size; i++) {
-      if (element.compareTo(this.get(i)) <= 0) {
-        super.add(i, element);
-        return true;
-      }
-    }
-    return super.add(element);
-*/
   }
 
   public void add(int index, T element) {
@@ -41,14 +32,7 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
     if (index > this.size()) {
       throw new IndexOutOfBoundsException("Index is larger than capacity.");
     }
-    int size = this.size();
-    for (int i = 0; i < size; i++) {
-      if (element.compareTo(this.get(i)) <= 0) {
-        super.add(i, element);
-        break;
-      }
-    }
-    super.add(size, element);
+    super.add(findIndex(element), element);
   }
 
   public T set(int index, T element) {
