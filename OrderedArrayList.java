@@ -10,7 +10,7 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
   //methods
   private int findIndex(T element) {
     for (int i = 0; i < super.size(); i++) {
-      if (element.compareTo(this.get(i)) <= 0) {
+      if (element.compareTo(super.get(i)) <= 0) {
         return i;
       }
     }
@@ -29,7 +29,7 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
     if (element == null) {
       throw new IllegalArgumentException("No nulls allowed.");
     }
-    if (index > this.size()) {
+    if (index > super.size()) {
       throw new IndexOutOfBoundsException("Index is larger than capacity.");
     }
     super.add(findIndex(element), element);
@@ -39,17 +39,17 @@ public class OrderedArrayList<T extends Comparable<T>> extends NoNullArrayList<T
     if (element == null) {
       throw new IllegalArgumentException("No nulls allowed.");
     }
-    if (index > this.size()) {
+    if (index > super.size()) {
       throw new IndexOutOfBoundsException("Index is larger than capacity.");
     }
-    T answer = this.get(index);
+    T answer = super.get(index);
+    super.remove(index);
     int correctIndex = findIndex(element);
-    this.remove(index);
-    for (int j = super.size(); j > correctIndex; j--) {
-      super.set(j, super.get(j - 1));
-    }
+    super.add(super.size(), super.get(super.size() - 1));
+    for (int j = super.size() - 2; j > correctIndex; j--) {
+        super.set(j, super.get(j - 1));
+      }
     super.set(correctIndex, element);
     return answer;
   }
-
 }
